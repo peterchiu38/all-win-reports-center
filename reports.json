@@ -1,24 +1,23 @@
 {
-  "lastUpdated": "2026-04-12T21:40:00+08:00",
-  "totalReports": 25,
+  "lastUpdated": "2026-04-14T01:35:00+08:00",
+  "totalReports": 13,
   "categories": {
-    "daily": { "name": "每日報告", "count": 3 },
+    "daily": { "name": "每日報告", "count": 2 },
     "weekly": { "name": "每週報告", "count": 4 },
-    "market": { "name": "市場報告", "count": 6 },
-    "marketing": { "name": "營銷報告", "count": 5 },
-    "investment": { "name": "投資報告", "count": 2 },
-    "finance": { "name": "財務報告", "count": 2 },
-    "reports": { "name": "綜合報告", "count": 3 }
+    "market": { "name": "市場報告", "count": 3 },
+    "marketing": { "name": "營銷報告", "count": 2 },
+    "investment": { "name": "投資報告", "count": 1 },
+    "team": { "name": "團隊報告", "count": 1 }
   },
   "recentReports": [
     {
-      "id": "mojt-share-0411",
-      "title": "Mojt市場份額與提升策略",
-      "date": "2026-04-11",
-      "category": "marketing",
-      "filename": "Mojt市場份額與提升策略.pdf",
+      "id": "market-daily-0412",
+      "title": "雞尾酒市場情報_每日簡報",
+      "date": "2026-04-12",
+      "category": "market",
+      "filename": "雞尾酒市場情報_每日簡報_20260412.pdf",
       "type": "pdf",
-      "description": "MOJT雞尾酒市場份額分析及品牌提升策略建議"
+      "description": "海峽兩岸雞尾酒市場最新情報"
     },
     {
       "id": "rtd-0412",
@@ -30,24 +29,6 @@
       "description": "預調酒市場每日動態追蹤報告"
     },
     {
-      "id": "cocktail-daily-0412",
-      "title": "雞尾酒市場情報_每日簡報",
-      "date": "2026-04-12",
-      "category": "market",
-      "filename": "雞尾酒市場情報_每日簡報_20260412.pdf",
-      "type": "pdf",
-      "description": "海峽兩岸雞尾酒市場最新情報"
-    },
-    {
-      "id": "mojt-fan-0412",
-      "title": "MOJT粉絲群聯動監控報告",
-      "date": "2026-04-12",
-      "category": "marketing",
-      "filename": "MOJT粉絲群聯動監控報告_20260412.pdf",
-      "type": "pdf",
-      "description": "周杰倫粉絲群動態與MOJT品牌聯動效果追蹤"
-    },
-    {
       "id": "mojt-daily-0412",
       "title": "MOJT每日方案",
       "date": "2026-04-12",
@@ -57,22 +38,13 @@
       "description": "MOJT品牌每日營銷執行方案"
     },
     {
-      "id": "skill-training-0412",
-      "title": "全員Skill培訓執行報告",
+      "id": "mojt-fan-0412",
+      "title": "MOJT粉絲群聯動監控報告",
       "date": "2026-04-12",
-      "category": "reports",
-      "filename": "全員Skill培訓執行報告_20260412.pdf",
+      "category": "marketing",
+      "filename": "MOJT粉絲群聯動監控報告_20260412.pdf",
       "type": "pdf",
-      "description": "團隊AI技能培訓進度與成果報告"
-    },
-    {
-      "id": "okr-0412",
-      "title": "OKR框架與工作模板",
-      "date": "2026-04-12",
-      "category": "reports",
-      "filename": "OKR框架與工作模板_20260412.pdf",
-      "type": "pdf",
-      "description": "團隊OKR目標管理框架與標準化工作模板"
+      "description": "周杰倫粉絲群動態與MOJT品牌聯動效果追蹤"
     },
     {
       "id": "intel-0412",
@@ -93,40 +65,58 @@
       "description": "越秀資本、特銳德、鐵龍物流持股動態週報"
     },
     {
-      "id": "investor-weekly-0412",
-      "title": "投資之神公司周报",
+      "id": "okr-0412",
+      "title": "OKR框架與工作模板",
       "date": "2026-04-12",
-      "category": "investment",
-      "filename": "投資之神_公司周报_2025年4月第二周.md",
+      "category": "team",
+      "filename": "OKR框架與工作模板_20260412.pdf",
       "type": "pdf",
-      "description": "投資之神每週持股公司分析報告"
+      "description": "團隊OKR目標管理框架與標準化工作模板"
     },
     {
-      "id": "victory-weekly-0412",
-      "title": "勝利之子周报",
-      "date": "2026-04-10",
-      "category": "weekly",
-      "filename": "勝利之子_周报_20260410.md",
+      "id": "org-optimize-0412",
+      "title": "組織運作優化建議",
+      "date": "2026-04-12",
+      "category": "team",
+      "filename": "組織運作優化建議_20260412.pdf",
       "type": "pdf",
-      "description": "勝利之子每週工作總結與下週計劃"
+      "description": "情報組啟動與組織架構優化方案"
     },
     {
-      "id": "marketing-weekly-0409",
-      "title": "營銷周报",
-      "date": "2026-04-09",
-      "category": "weekly",
-      "filename": "营销周报_20260409.md",
+      "id": "skill-training-0412",
+      "title": "全員Skill培訓執行報告",
+      "date": "2026-04-12",
+      "category": "team",
+      "filename": "全員Skill培訓執行報告_20260412.pdf",
       "type": "pdf",
-      "description": "MOJT品牌每週營銷進度報告"
+      "description": "團隊AI技能培訓進度與成果報告"
+    },
+    {
+      "id": "skill-plan-0412",
+      "title": "全員Skill培訓計劃",
+      "date": "2026-04-12",
+      "category": "team",
+      "filename": "全員Skill培訓計劃_20260412.pdf",
+      "type": "pdf",
+      "description": "團隊AI技能培訓計劃書"
     },
     {
       "id": "intel-template-0412",
       "title": "情報組工作模板",
       "date": "2026-04-12",
-      "category": "reports",
+      "category": "team",
       "filename": "情報組工作模板_20260412.pdf",
       "type": "pdf",
-      "description": "情報組標準化工作流程模板"
+      "description": "情報組標準化工作模板"
+    },
+    {
+      "id": "mojt-share-0411",
+      "title": "Mojt市場份額與提升策略",
+      "date": "2026-04-11",
+      "category": "market",
+      "filename": "Mojt市場份額與提升策略.pdf",
+      "type": "pdf",
+      "description": "MOJT市場地位與品牌提升策略報告"
     },
     {
       "id": "news-0411",
@@ -135,25 +125,7 @@
       "category": "daily",
       "filename": "國內頭條新聞_20260411.pdf",
       "type": "pdf",
-      "description": "大陸/台灣重要財經頭條新聞摘錄"
-    },
-    {
-      "id": "cocktail-0411",
-      "title": "雞尾酒市場日報",
-      "date": "2026-04-11",
-      "category": "market",
-      "filename": "鸡尾酒市场日报_20260411.md",
-      "type": "pdf",
-      "description": "預調酒市場每日數據追蹤"
-    },
-    {
-      "id": "org-optimize-0412",
-      "title": "組織運作優化建議",
-      "date": "2026-04-12",
-      "category": "reports",
-      "filename": "組織運作優化建議_20260412.pdf",
-      "type": "pdf",
-      "description": "小P組織運作改善建議報告"
+      "description": "每日國內重要新聞摘要"
     }
   ]
 }
