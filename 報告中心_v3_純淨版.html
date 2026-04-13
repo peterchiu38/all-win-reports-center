@@ -183,6 +183,31 @@
             margin-top: 4px;
         }
 
+        /* 空狀態 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+            color: #86868b;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            color: #86868b;
+        }
+
         /* 底部版權 */
         .footer {
             text-align: center;
@@ -240,7 +265,7 @@
         <!-- 統計 -->
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-number">14</div>
+                <div class="stat-number">0</div>
                 <div class="stat-label">報告總數</div>
             </div>
             <div class="stat-card">
@@ -248,7 +273,7 @@
                 <div class="stat-label">部門</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">2026-04-14</div>
+                <div class="stat-number">-</div>
                 <div class="stat-label">最後更新</div>
             </div>
         </div>
@@ -256,6 +281,13 @@
         <!-- 報告列表 -->
         <div class="report-list" id="reportList">
             <!-- 由 JavaScript 動態生成 -->
+        </div>
+
+        <!-- 空狀態提示 -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">📂</div>
+            <div class="empty-title">目前沒有報告</div>
+            <div class="empty-text">有新報告時會自動顯示在這裡</div>
         </div>
     </main>
 
@@ -266,134 +298,55 @@
     </footer>
 
     <script>
-        // 報告數據
-        const reports = [
-            {
-                title: "MOJT 每日方案",
-                date: "2026-04-12",
-                type: "行銷",
-                icon: "🎯",
-                file: "MOJT_每日方案_20260412.pdf"
-            },
-            {
-                title: "MOJT 粉絲群聯動監控報告",
-                date: "2026-04-12",
-                type: "粉絲",
-                icon: "🎵",
-                file: "MOJT粉絲群聯動監控報告_20260412.pdf"
-            },
-            {
-                title: "MOJT 市場份額與提升策略",
-                date: "2026-04-11",
-                type: "情報",
-                icon: "📊",
-                file: "Mojt市場份額與提升策略.pdf"
-            },
-            {
-                title: "OKR 框架與工作模板",
-                date: "2026-04-12",
-                type: "管理",
-                icon: "📋",
-                file: "OKR框架與工作模板_20260412.pdf"
-            },
-            {
-                title: "RTD-RTS 市場動態簡報",
-                date: "2026-04-12",
-                type: "情報",
-                icon: "🌐",
-                file: "RTD-RTS市场动态简报_20260412.pdf"
-            },
-            {
-                title: "全員 Skill 培訓執行報告",
-                date: "2026-04-12",
-                type: "培訓",
-                icon: "📚",
-                file: "全員Skill培訓執行報告_20260412.pdf"
-            },
-            {
-                title: "全員 Skill 培訓計劃",
-                date: "2026-04-12",
-                type: "培訓",
-                icon: "📖",
-                file: "全員Skill培訓計劃_20260412.pdf"
-            },
-            {
-                title: "國內頭條新聞",
-                date: "2026-04-11",
-                type: "情報",
-                icon: "📰",
-                file: "國內頭條新聞_20260411.pdf"
-            },
-            {
-                title: "情報組工作模板",
-                date: "2026-04-12",
-                type: "情報",
-                icon: "🔍",
-                file: "情報組工作模板_20260412.pdf"
-            },
-            {
-                title: "持股公司週報",
-                date: "2026-04-12",
-                type: "投資",
-                icon: "💰",
-                file: "持股公司週報_20260412.pdf"
-            },
-            {
-                title: "每日情報簡報",
-                date: "2026-04-12",
-                type: "情報",
-                icon: "📋",
-                file: "每日情報簡報_20260412.pdf"
-            },
-            {
-                title: "組織運作優化建議",
-                date: "2026-04-12",
-                type: "管理",
-                icon: "⚡",
-                file: "組織運作優化建議_20260412.pdf"
-            },
-            {
-                title: "雞尾酒市場情報 每日簡報",
-                date: "2026-04-12",
-                type: "情報",
-                icon: "🍸",
-                file: "雞尾酒市場情報_每日簡報_20260412.pdf"
-            },
-            {
-                title: "全員 Skill 練習記錄簿 模板",
-                date: "2026-04-12",
-                type: "培訓",
-                icon: "✏️",
-                file: "全員Skill練習記錄簿_模板.pdf"
+        // 報告數據（從 reports.json 載入）
+        let reports = [];
+
+        // 從 JSON 檔案載入報告
+        async function loadReports() {
+            try {
+                const response = await fetch('reports.json');
+                const data = await response.json();
+                reports = data.reports || [];
+                renderReports();
+            } catch (error) {
+                console.log('使用空報告列表');
+                renderReports();
             }
-        ];
+        }
 
         // 生成報告列表
         function renderReports() {
             const container = document.getElementById('reportList');
-            container.innerHTML = reports.map((report, index) => `
-                <div class="report-card" onclick="openReport('${report.file}')" style="animation: fadeInUp 0.3s ease ${index * 0.05}s both;">
-                    <div class="report-icon">${report.icon}</div>
-                    <div class="report-info">
-                        <div class="report-title">${report.title}</div>
-                        <div class="report-meta">
-                            <span class="report-date">📅 ${report.date}</span>
-                            <span class="report-type">${report.type}</span>
+            const emptyState = document.getElementById('emptyState');
+
+            if (reports.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                container.innerHTML = reports.map((report, index) => `
+                    <div class="report-card" onclick="openReport('${report.file}')" style="animation: fadeInUp 0.3s ease ${index * 0.05}s both;">
+                        <div class="report-icon">${report.icon}</div>
+                        <div class="report-info">
+                            <div class="report-title">${report.title}</div>
+                            <div class="report-meta">
+                                <span class="report-date">📅 ${report.date}</span>
+                                <span class="report-type">${report.type}</span>
+                            </div>
                         </div>
+                        <div class="report-arrow">›</div>
                     </div>
-                    <div class="report-arrow">›</div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
         // 開啟報告
         function openReport(filename) {
-            // 直接在新視窗開啟 PDF
             window.open(filename, '_blank');
         }
 
-        // 頁面載入時渲染
-        document.addEventListener('DOMContentLoaded', renderReports);
+        // 頁面載入時載入報告
+        document.addEventListener('DOMContentLoaded', loadReports);
     </script>
 
     <style>
