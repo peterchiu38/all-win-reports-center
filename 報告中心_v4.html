@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL WIN 報告中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        /* 頂部導航 */
+        .header {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 28px 48px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d1d1f;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #0071e3;
+        }
+
+        .date-display {
+            font-size: 18px;
+            color: #86868b;
+        }
+
+        /* 主內容區 */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px;
+        }
+
+        /* 統計卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: #1d1d1f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 20px;
+            color: #86868b;
+            margin-top: 8px;
+        }
+
+        /* 報告分類區 */
+        .section-title {
+            font-size: 34px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+        }
+
+        .category-section {
+            margin-bottom: 48px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .category-icon {
+            font-size: 36px;
+        }
+
+        .category-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .report-count {
+            background: #0071e3;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
+        /* 報告卡片 */
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: #0071e3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        .report-card:hover::before {
+            opacity: 1;
+        }
+
+        .report-type {
+            display: inline-block;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .report-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e7;
+        }
+
+        .report-date {
+            font-size: 18px;
+            color: #86868b;
+        }
+
+        .report-arrow {
+            font-size: 24px;
+            color: #0071e3;
+            transition: transform 0.3s ease;
+        }
+
+        .report-card:hover .report-arrow {
+            transform: translateX(8px);
+        }
+
+        /* 空狀態 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+        }
+
+        .empty-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+        }
+
+        .empty-desc {
+            font-size: 22px;
+            color: #86868b;
+        }
+
+        /* 底部版權 */
+        .footer {
+            text-align: center;
+            padding: 48px;
+            color: #86868b;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">ALL <span>WIN</span> 報告中心</div>
+            <div class="date-display" id="currentDate"></div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- 統計區 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="totalReports">0</div>
+                <div class="stat-label">總報告數</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-number" id="todayReports">0</div>
+                <div class="stat-label">今日更新</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number" id="totalCategories">0</div>
+                <div class="stat-label">報告分類</div>
+            </div>
+        </div>
+
+        <!-- 報告列表區 -->
+        <div id="reportContainer">
+            <div class="empty-state">
+                <div class="empty-icon">📂</div>
+                <div class="empty-title">目前沒有報告</div>
+                <div class="empty-desc">新報告出爐後會自動顯示在這裡</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 ALL WIN 全勝集團 · 報告中心
+    </footer>
+
+    <script>
+        // 顯示當前日期
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('zh-TW', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long'
+        });
+        document.getElementById('currentDate').textContent = dateStr;
+
+        // 報告數據
+        const reports = [
+            {
+                id: 'intelligence-daily',
+                category: '情報組',
+                categoryIcon: '🔍',
+                type: '每日簡報',
+                title: '每日情報簡報',
+                date: '2026-04-14',
+                url: '報告_情報簡報.html'
+            },
+            {
+                id: 'intelligence-taiwan',
+                category: '情報組',
+                categoryIcon: '🔍',
+                type: '市場調研',
+                title: '台灣市場深度報告',
+                date: '2026-04-14',
+                url: '報告_台灣市場.html'
+            },
+            {
+                id: 'investment-weekly',
+                category: '投資組',
+                categoryIcon: '💰',
+                type: '每週報告',
+                title: '持股公司週報',
+                date: '2026-04-14',
+                url: '報告_持股週報.html'
+            },
+            {
+                id: 'marketing-daily',
+                category: '行銷組',
+                categoryIcon: '📢',
+                type: '每日創意',
+                title: 'MOJT 每日行銷方案',
+                date: '2026-04-14',
+                url: '報告_行銷方案.html'
+            },
+            {
+                id: 'market-survey',
+                category: '情報組',
+                categoryIcon: '🌏',
+                type: '市場調研',
+                title: '兩岸市場動態',
+                date: '2026-04-14',
+                url: '報告_市場調研.html'
+            }
+        ];
+
+        // 渲染報告
+        function renderReports() {
+            if (reports.length === 0) {
+                document.getElementById('reportContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📂</div>
+                        <div class="empty-title">目前沒有報告</div>
+                        <div class="empty-desc">新報告出爐後會自動顯示在這裡</div>
+                    </div>
+                `;
+                document.getElementById('totalReports').textContent = '0';
+                document.getElementById('todayReports').textContent = '0';
+                document.getElementById('totalCategories').textContent = '0';
+                return;
+            }
+
+            // 按分類分組
+            const categories = {};
+            reports.forEach(report => {
+                if (!categories[report.category]) {
+                    categories[report.category] = {
+                        icon: report.categoryIcon,
+                        reports: []
+                    };
+                }
+                categories[report.category].reports.push(report);
+            });
+
+            // 更新統計
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = reports.filter(r => r.date === today).length;
+            document.getElementById('totalReports').textContent = reports.length;
+            document.getElementById('todayReports').textContent = todayCount;
+            document.getElementById('totalCategories').textContent = Object.keys(categories).length;
+
+            // 渲染分類
+            let html = '';
+            Object.entries(categories).forEach(([category, data]) => {
+                html += `
+                    <section class="category-section">
+                        <div class="category-header">
+                            <span class="category-icon">${data.icon}</span>
+                            <h2 class="category-title">${category}</h2>
+                            <span class="report-count">${data.reports.length}</span>
+                        </div>
+                        <div class="report-grid">
+                            ${data.reports.map(report => `
+                                <div class="report-card" onclick="window.open('${report.url}', '_blank')">
+                                    <span class="report-type">${report.type}</span>
+                                    <h3 class="report-title">${report.title}</h3>
+                                    <div class="report-meta">
+                                        <span class="report-date">${report.date}</span>
+                                        <span class="report-arrow">→</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+            });
+
+            document.getElementById('reportContainer').innerHTML = html;
+        }
+
+        renderReports();
+    </script>
+</body>
+</html>
