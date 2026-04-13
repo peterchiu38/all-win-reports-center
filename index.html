@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL WIN 全勝集團 - 本地入口</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1d1d1f 0%, #2d2d30 50%, #1d1d1f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0071e3 0%, #5856d6 100%);
+            border-radius: 20px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 8px 32px rgba(0,113,227,0.3);
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 32px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0071e3 0%, #5856d6 100%);
+            color: white;
+            box-shadow: 0 4px 24px rgba(0,113,227,0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,113,227,0.5);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .btn-icon {
+            font-size: 24px;
+        }
+        .info {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+        .info-item {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .info-item .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .version {
+            margin-top: 32px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏢</div>
+        <h1>ALL WIN 全勝集團</h1>
+        <p class="subtitle">本地管理系統入口</p>
+
+        <div class="buttons">
+            <a href="ALLWIN管理Dashboard_v1.html" class="btn btn-primary">
+                <span class="btn-icon">📊</span>
+                管理儀表板 v1.0
+            </a>
+            <a href="報告中心_智能版_v7.html" class="btn btn-secondary">
+                <span class="btn-icon">🔐</span>
+                智能報告中心 v7
+            </a>
+        </div>
+
+        <div class="info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="value">8</span>
+                    AI 團隊成員
+                </div>
+                <div class="info-item">
+                    <span class="value">5</span>
+                    核心模組
+                </div>
+                <div class="info-item">
+                    <span class="value">24/7</span>
+                    即時監控
+                </div>
+            </div>
+        </div>
+
+        <div class="version">
+            WorkBuddy AI Team · 2026 v1.0
+        </div>
+    </div>
+</body>
+</html>

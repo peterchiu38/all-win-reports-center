@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL WIN 全勝集團 - 管理儀表板</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0071e3;
+            --primary-dark: #0077ED;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f7;
+            --bg-tertiary: #fbfbfd;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --border: #d2d2d7;
+            --success: #34c759;
+            --warning: #ff9500;
+            --danger: #ff3b30;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1d1d1f 0%, #2d2d30 100%);
+            color: white;
+            padding: 24px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, #5856d6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .last-update {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px;
+        }
+
+        /* Alert Section */
+        .alert-section {
+            margin-bottom: 24px;
+        }
+
+        .alert-card {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .alert-card.urgent {
+            background: linear-gradient(135deg, #ffe5e5 0%, #ffd9d9 100%);
+            border-left-color: var(--danger);
+        }
+
+        .alert-icon {
+            font-size: 28px;
+        }
+
+        .alert-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .alert-content p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+
+        /* Card Base */
+        .card {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .emoji {
+            font-size: 18px;
+        }
+
+        .card-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-new { background: #e3f2fd; color: #1565c0; }
+        .badge-hot { background: #fce4ec; color: #c2185b; }
+        .badge-pending { background: #fff3e0; color: #e65100; }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Marketing Ideas */
+        .idea-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .idea-item:last-child {
+            border-bottom: none;
+        }
+
+        .idea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .idea-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .idea-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .idea-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .idea-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            padding: 3px 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .tag.priority-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* Market Intelligence Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: var(--bg-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-active { background: var(--success); }
+        .status-warning { background: var(--warning); }
+        .status-inactive { background: #ccc; }
+
+        /* Report Summary */
+        .report-item {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .report-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 14px;
+        }
+
+        .report-info {
+            flex: 1;
+        }
+
+        .report-info h5 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .report-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .report-status {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-done {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* Fans Monitor */
+        .fans-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .fans-item {
+            padding: 14px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .fans-platform {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .fans-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .fans-status {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .fans-count {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        /* Stock Holdings */
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .stock-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stock-code {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .stock-price {
+            text-align: right;
+        }
+
+        .stock-current {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stock-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stock-change.up {
+            color: #ef5350;
+        }
+
+        .stock-change.down {
+            color: #26a69a;
+        }
+
+        /* Todo Section */
+        .todo-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .todo-content {
+            flex: 1;
+        }
+
+        .todo-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .todo-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .todo-priority {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .priority-urgent {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .priority-normal {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .stat-trend.up { color: #ef5350; }
+        .stat-trend.down { color: #26a69a; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--bg-secondary);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .col-8, .col-4 { grid-column: span 6; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 16px; }
+            .col-8, .col-6, .col-4 { grid-column: span 12; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .fans-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Refresh Animation */
+        .refreshing .spinner {
+            animation: spin 0.5s linear infinite;
+        }
+
+        /* Refresh Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal h3 {
+            margin-bottom: 16px;
+        }
+
+        .modal p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Demo Mode Banner */
+        .demo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-banner">
+        🎨 這是本地開發版本 | 點擊右上角「刷新數據」同步最新資訊
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🏢</div>
+                <div class="logo-text">
+                    <h1>ALL WIN 全勝集團</h1>
+                    <span>管理儀表板 v1.0</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <span class="last-update" id="lastUpdate">最後更新：載入中...</span>
+                <button class="btn btn-secondary" onclick="showRefreshModal()">
+                    ⚙️ 設定
+                </button>
+                <button class="btn btn-primary" onclick="refreshAll()">
+                    🔄 刷新數據
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Alert Section -->
+        <section class="alert-section" id="alertSection">
+            <!-- 動態載入待辦提醒 -->
+        </section>
+
+        <!-- Stats Overview -->
+        <section class="stats-grid" id="statsSection">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e3f2fd;">💡</div>
+                <div class="stat-value" id="statIdeas">-</div>
+                <div class="stat-label">今日創意</div>
+                <div class="stat-trend up" id="statIdeasTrend">↑ 3 項新</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fce4ec;">📊</div>
+                <div class="stat-value" id="statMarkets">-</div>
+                <div class="stat-label">市場監控</div>
+                <div class="stat-trend" id="statMarketsTrend">兩岸+東南亞</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fff3e0;">📋</div>
+                <div class="stat-value" id="statReports">-</div>
+                <div class="stat-label">待處理報告</div>
+                <div class="stat-trend" id="statReportsTrend">2 項待確認</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e8f5e9;">👥</div>
+                <div class="stat-value" id="statFans">-</div>
+                <div class="stat-label">粉絲群監控</div>
+                <div class="stat-trend" id="statFansTrend">全線正常</div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- 1. 行銷創意 -->
+            <div class="col-8">
+                <h2 class="section-title">💡 行銷創意（每日產出）</h2>
+                <div class="card" id="marketingCard">
+                    <div class="card-header">
+                        <span class="card-title"><span class="emoji">🎨</span> 行銷天才 & 市場鬼才</span>
+                        <span class="card-badge badge-new">今日更新</span>
+                    </div>
+                    <div class="card-body" id="marketingContent">
+                        <div class="loading"><div class="spinner"></div>載入創意數據...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 待辦事項 -->
+            <div class="col-4">
+                <h2 class="section-title">⚠️ 待辦事項 & 待確認</h2>
+                <div class="card" id="todoCard">
+                    <div class="card-header">
+                        <span class="card-title"><span class="emoji">📌</span> 任務追蹤</span>
+                        <span class="card-badge badge-pending" id="todoCount">0 項</span>
+                    </div>
+                    <div class="card-body" id="todoContent">
+                        <div class="loading"><div class="spinner"></div>載入任務...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 市場情報 -->
+            <div class="col-6">
+                <h2 class="section-title">🌏 市場情報（兩岸動態）</h2>
+                <div class="card" id="marketCard">
+                    <div class="card-header">
+                        <span class="card-title"><span class="emoji">📡</span> 情報之王 & 小台/大陸</span>
+                        <span class="card-badge badge-hot">即時</span>
+                    </div>
+                    <div class="card-body" id="marketContent">
+                        <div class="loading"><div class="spinner"></div>載入市場數據...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 日報/週報摘要 -->
+            <div class="col-6">
+                <h2 class="section-title">📋 日報/週報摘要</h2>
+                <div class="card" id="reportCard">
+                    <div class="card-header">
+                        <span class="card-title"><span class="emoji">📝</span> 勝利之子</span>
+                        <span class="card-badge badge-new">最新</span>
+                    </div>
+                    <div class="card-body" id="reportContent">
+                        <div class="loading"><div class="spinner"></div>載入報告摘要...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 粉絲群監控 -->
+            <div class="col-4">
+                <h2 class="section-title">🎵 粉絲群聯動監控</h2>
+                <div class="card" id="fansCard">
+                    <div class="card-header">
+                        <span class="card-title"><span class="emoji">👥</span> 小台 & 大陸</span>
+                    </div>
+                    <div class="card-body" id="fansContent">
+                        <div class="loading"><div class="spinner"></div>載入粉絲數據...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 投資持股動態 -->
+            <div class="col-8">
+                <h2 class="section-title">💰 投資持股動態</h2>
+                <div class="card" id="stockCard">
+                    <div class="card-header">
+                        <span class="card-title"><span class="emoji">📈</span> 投資之神</span>
+                        <span class="card-badge badge-hot">實時</span>
+                    </div>
+                    <div class="card-body" id="stockContent">
+                        <div class="loading"><div class="spinner"></div>載入持股數據...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>ALL WIN 全勝集團管理系統 | © 2026 WorkBuddy AI 團隊</p>
+    </footer>
+
+    <!-- Refresh Modal -->
+    <div class="modal" id="refreshModal">
+        <div class="modal-content">
+            <h3>🔄 刷新數據</h3>
+            <p>正在同步最新資訊...</p>
+            <div class="loading"><div class="spinner"></div>載入中</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // 數據配置 - 在此編輯各模組的數據來源
+        // ============================================
+        
+        const DATA_CONFIG = {
+            // 行銷創意
+            marketing: {
+                source: 'reports.json', // 或直接寫入下方數據
+                fallback: [
+                    {
+                        title: '【太陽之子】MV 名畫風格 MOJT 方案',
+                        desc: '結合 MV 融合世界名畫元素，推出「名畫系列」限量包裝',
+                        author: '行銷天才',
+                        date: '2026-04-14',
+                        tags: ['聯名', '限量', 'IP']
+                    },
+                    {
+                        title: 'Z 世代情緒消費策略',
+                        desc: '針對 18-25 歲群體，主打「情緒釋放」場景：派對、露營、音樂節',
+                        author: '市場鬼才',
+                        date: '2026-04-14',
+                        tags: ['Z世代', '場景']
+                    },
+                    {
+                        title: '周杰倫演唱會聯動計劃',
+                        desc: '2026 巡演合作機會評估，含票務綁定、粉絲福利、限定商品',
+                        author: '行銷天才',
+                        date: '2026-04-13',
+                        tags: ['演唱會', '粉絲']
+                    }
+                ]
+            },
+            
+            // 市場情報
+            market: {
+                fallback: [
+                    { region: '🇹🇼 台灣', item: 'MOJT 便利商店鋪貨', status: 'active', update: '4/13 新增 7-11 門市' },
+                    { region: '🇹🇼 台灣', item: '競品動態 RIO', status: 'warning', update: '4/12 降價促銷中' },
+                    { region: '🇨🇳 大陸', item: '京東旗艦店銷售', status: 'active', update: '4/13 環比 +15%' },
+                    { region: '🇨🇳 大陸', item: '抖音直播帶貨', status: 'active', update: '4/14 達成 KOL 合作' },
+                    { region: '🌏 東南亞', item: '馬來西亞市場調研', status: 'inactive', update: 'Q2 啟動' }
+                ]
+            },
+            
+            // 日報/週報
+            reports: {
+                fallback: [
+                    { type: 'daily', title: '2026-04-13 站會記錄', status: 'done', author: '勝利之子', date: '04-13 10:00' },
+                    { type: 'daily', title: '2026-04-14 站會記錄', status: 'pending', author: '勝利之子', date: '04-14 10:00' },
+                    { type: 'weekly', title: '2026年第15週週報', status: 'pending', author: '勝利之子', date: '04-18(五)' }
+                ]
+            },
+            
+            // 粉絲群監控
+            fans: {
+                fallback: [
+                    { platform: '💬', name: '台灣 FB 社團', status: '正常', members: '12.5萬' },
+                    { platform: '📱', name: 'LINE 官方群', status: '正常', members: '8.2萬' },
+                    { platform: '🎵', name: '微博 @周杰倫', status: '正常', members: '3128萬' },
+                    { platform: '🎬', name: 'B站 JAYCN', status: '活躍', members: '89萬' },
+                    { platform: '📰', name: '百度周杰倫吧', status: '正常', members: '1200萬' },
+                    { platform: '🌸', name: '小紅書話題', status: '活躍', members: '45萬' }
+                ]
+            },
+            
+            // 投資持股
+            stocks: {
+                fallback: [
+                    { name: '越秀資本', code: '00123.HK', price: '10.52', change: '+2.1%', direction: 'up' },
+                    { name: '特高壓 Tgood', code: '003006.SZ', price: '8.45', change: '-0.8%', direction: 'down' },
+                    { name: '鐵龍物流', code: '600125.SH', price: '5.23', change: '+1.2%', direction: 'up' },
+                    { name: '天華新能源', code: '301508.SZ', price: '24.68', change: '+3.5%', direction: 'up' }
+                ]
+            },
+            
+            // 待辦事項
+            todos: {
+                fallback: [
+                    { title: '老闆確認：情報組啟動時間', priority: 'urgent', deadline: '今天 12:00', assignee: '情報之王' },
+                    { title: '行銷天才提交市場鬼才月度 KPI', priority: 'normal', deadline: '本週五', assignee: '行銷天才' },
+                    { title: '勝利之子建立獨立工作區', priority: 'normal', deadline: '明天', assignee: '勝利之子' },
+                    { title: '報告中心 v7 登入測試', priority: 'urgent', deadline: '今天', assignee: '小P' }
+                ]
+            }
+        };
+
+        // ============================================
+        // 渲染函數
+        // ============================================
+
+        function renderMarketing(data) {
+            const container = document.getElementById('marketingContent');
+            let html = '';
+            data.forEach((idea, index) => {
+                const tags = idea.tags.map(t => `<span class="tag">${t}</span>`).join('');
+                html += `
+                    <div class="idea-item">
+                        <div class="idea-header">
+                            <span class="idea-title">${idea.title}</span>
+                            <span class="idea-meta">${idea.author} · ${idea.date}</span>
+                        </div>
+                        <p class="idea-desc">${idea.desc}</p>
+                        <div class="idea-tags">${tags}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            document.getElementById('statIdeas').textContent = data.length;
+        }
+
+        function renderMarket(data) {
+            const container = document.getElementById('marketContent');
+            let html = '<table class="data-table"><thead><tr><th>地區</th><th>監控項目</th><th>狀態</th><th>最新動態</th></tr></thead><tbody>';
+            data.forEach(item => {
+                const statusClass = item.status === 'active' ? 'status-active' : (item.status === 'warning' ? 'status-warning' : 'status-inactive');
+                const statusText = item.status === 'active' ? '正常' : (item.status === 'warning' ? '需關注' : '待啟動');
+                html += `
+                    <tr>
+                        <td>${item.region}</td>
+                        <td><strong>${item.item}</strong></td>
+                        <td><span class="${statusClass}"></span>${statusText}</td>
+                        <td style="color:#666;font-size:12px">${item.update}</td>
+                    </tr>
+                `;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+            
+            // 統計
+            const activeCount = data.filter(d => d.status === 'active').length;
+            document.getElementById('statMarkets').textContent = `${activeCount}/${data.length}`;
+        }
+
+        function renderReports(data) {
+            const container = document.getElementById('reportContent');
+            let html = '';
+            data.forEach(report => {
+                const icon = report.type === 'weekly' ? '📅' : '📄';
+                const statusClass = report.status === 'done' ? 'status-done' : 'status-pending';
+                const statusText = report.status === 'done' ? '已完成' : '待完成';
+                html += `
+                    <div class="report-item">
+                        <div class="report-icon" style="background: ${report.type === 'weekly' ? '#9c27b0' : '#2196f3'}">${icon}</div>
+                        <div class="report-info">
+                            <h5>${report.title}</h5>
+                            <p>${report.author} · ${report.date}</p>
+                        </div>
+                        <span class="report-status ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            
+            // 統計
+            const pendingCount = data.filter(d => d.status === 'pending').length;
+            document.getElementById('statReports').textContent = pendingCount;
+            document.getElementById('statReportsTrend').textContent = `${pendingCount} 項待確認`;
+        }
+
+        function renderFans(data) {
+            const container = document.getElementById('fansContent');
+            let html = '<div class="fans-grid">';
+            data.forEach(fan => {
+                html += `
+                    <div class="fans-item">
+                        <div class="fans-platform">${fan.platform}</div>
+                        <div class="fans-name">${fan.name}</div>
+                        <div class="fans-status">${fan.status}</div>
+                        <div class="fans-count">${fan.members}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+            
+            // 統計
+            const activeCount = data.filter(d => d.status === '活躍').length;
+            document.getElementById('statFans').textContent = `${activeCount}/${data.length}`;
+            document.getElementById('statFansTrend').textContent = activeCount > 0 ? '有活躍話題' : '全線正常';
+        }
+
+        function renderStocks(data) {
+            const container = document.getElementById('stockContent');
+            let html = '<table class="data-table"><thead><tr><th>股票名稱</th><th>代碼</th><th>現價</th><th>漲跌</th></tr></thead><tbody>';
+            data.forEach(stock => {
+                const changeClass = stock.direction === 'up' ? 'up' : 'down';
+                html += `
+                    <tr>
+                        <td><strong>${stock.name}</strong></td>
+                        <td style="color:#888">${stock.code}</td>
+                        <td><strong>$${stock.price}</strong></td>
+                        <td class="stock-change ${changeClass}">${stock.change}</td>
+                    </tr>
+                `;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function renderTodos(data) {
+            const container = document.getElementById('todoContent');
+            let html = '';
+            data.forEach(todo => {
+                const priorityClass = todo.priority === 'urgent' ? 'priority-urgent' : 'priority-normal';
+                const priorityText = todo.priority === 'urgent' ? '緊急' : '一般';
+                html += `
+                    <div class="todo-item">
+                        <div class="todo-checkbox">☐</div>
+                        <div class="todo-content">
+                            <div class="todo-title">${todo.title}</div>
+                            <div class="todo-meta">${todo.assignee} · ${todo.deadline}</div>
+                        </div>
+                        <span class="todo-priority ${priorityClass}">${priorityText}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            document.getElementById('todoCount').textContent = `${data.length} 項`;
+        }
+
+        function renderAlerts(data) {
+            const container = document.getElementById('alertSection');
+            if (data.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            let html = '';
+            data.forEach(alert => {
+                const alertClass = alert.urgent ? 'alert-card urgent' : 'alert-card';
+                html += `
+                    <div class="${alertClass}">
+                        <div class="alert-icon">${alert.icon}</div>
+                        <div class="alert-content">
+                            <h4>${alert.title}</h4>
+                            <p>${alert.message}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // 主載入函數
+        // ============================================
+
+        async function loadAllData() {
+            // 嘗試從 reports.json 載入數據
+            try {
+                const response = await fetch('reports.json');
+                if (response.ok) {
+                    const reportsData = await response.json();
+                    // 如果有行銷創意數據
+                    if (reportsData.marketing) {
+                        DATA_CONFIG.marketing.data = reportsData.marketing;
+                    }
+                }
+            } catch (e) {
+                console.log('使用預設數據');
+            }
+
+            // 渲染所有模組
+            renderMarketing(DATA_CONFIG.marketing.data || DATA_CONFIG.marketing.fallback);
+            renderMarket(DATA_CONFIG.market.fallback);
+            renderReports(DATA_CONFIG.reports.fallback);
+            renderFans(DATA_CONFIG.fans.fallback);
+            renderStocks(DATA_CONFIG.stocks.fallback);
+            renderTodos(DATA_CONFIG.todos.fallback);
+            
+            // 渲染提醒（從待辦中提取緊急事項）
+            const urgentTodos = DATA_CONFIG.todos.fallback.filter(t => t.priority === 'urgent');
+            const alerts = urgentTodos.map(t => ({
+                icon: '⚠️',
+                title: t.title,
+                message: `${t.assignee} · ${t.deadline}`,
+                urgent: true
+            }));
+            renderAlerts(alerts);
+
+            // 更新時間
+            updateLastUpdateTime();
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-TW', {
+                month: 'numeric',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('lastUpdate').textContent = `最後更新：${timeStr}`;
+        }
+
+        function showRefreshModal() {
+            document.getElementById('refreshModal').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('refreshModal').classList.remove('show');
+                refreshAll();
+            }, 1500);
+        }
+
+        async function refreshAll() {
+            // 顯示載入狀態
+            document.querySelectorAll('.card-body').forEach(el => {
+                el.innerHTML = '<div class="loading"><div class="spinner"></div>刷新中...</div>';
+            });
+
+            // 模擬載入延遲
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            // 重新載入
+            loadAllData();
+        }
+
+        // ============================================
+        // 初始化
+        // ============================================
+        document.addEventListener('DOMContentLoaded', loadAllData);
+    </script>
+</body>
+</html>

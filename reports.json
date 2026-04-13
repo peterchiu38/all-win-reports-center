@@ -1,131 +1,68 @@
 {
-  "lastUpdated": "2026-04-14T01:35:00+08:00",
-  "totalReports": 13,
-  "categories": {
-    "daily": { "name": "每日報告", "count": 2 },
-    "weekly": { "name": "每週報告", "count": 4 },
-    "market": { "name": "市場報告", "count": 3 },
-    "marketing": { "name": "營銷報告", "count": 2 },
-    "investment": { "name": "投資報告", "count": 1 },
-    "team": { "name": "團隊報告", "count": 1 }
-  },
-  "recentReports": [
+  "version": "7",
+  "lastUpdate": "2026-04-14T01:45:00",
+  "reports": [
     {
-      "id": "market-daily-0412",
-      "title": "雞尾酒市場情報_每日簡報",
-      "date": "2026-04-12",
-      "category": "market",
-      "filename": "雞尾酒市場情報_每日簡報_20260412.pdf",
-      "type": "pdf",
-      "description": "海峽兩岸雞尾酒市場最新情報"
+      "id": "dashboard-v1",
+      "title": "ALL WIN 管理儀表板 v1.0",
+      "description": "一站式管理 Dashboard：行銷創意、市場情報、日報週報、粉絲監控、投資持股、待辦事項",
+      "type": "dashboard",
+      "file": "ALLWIN管理Dashboard_v1.html",
+      "icon": "📊",
+      "date": "2026-04-14",
+      "status": "active",
+      "features": [
+        "行銷創意（每日產出）",
+        "市場情報（兩岸動態）",
+        "日報/週報摘要",
+        "粉絲群聯動監控",
+        "投資持股動態",
+        "待辦事項提醒"
+      ]
     },
     {
-      "id": "rtd-0412",
-      "title": "RTD-RTS市場動態簡報",
-      "date": "2026-04-12",
-      "category": "market",
-      "filename": "RTD-RTS市场动态简报_20260412.pdf",
-      "type": "pdf",
-      "description": "預調酒市場每日動態追蹤報告"
-    },
-    {
-      "id": "mojt-daily-0412",
-      "title": "MOJT每日方案",
-      "date": "2026-04-12",
-      "category": "marketing",
-      "filename": "MOJT_每日方案_20260412.pdf",
-      "type": "pdf",
-      "description": "MOJT品牌每日營銷執行方案"
-    },
-    {
-      "id": "mojt-fan-0412",
-      "title": "MOJT粉絲群聯動監控報告",
-      "date": "2026-04-12",
-      "category": "marketing",
-      "filename": "MOJT粉絲群聯動監控報告_20260412.pdf",
-      "type": "pdf",
-      "description": "周杰倫粉絲群動態與MOJT品牌聯動效果追蹤"
-    },
-    {
-      "id": "intel-0412",
-      "title": "每日情報簡報",
-      "date": "2026-04-12",
-      "category": "daily",
-      "filename": "每日情報簡報_20260412.pdf",
-      "type": "pdf",
-      "description": "情報組每日市場情報摘要"
-    },
-    {
-      "id": "stock-weekly-0412",
-      "title": "持股公司週報",
-      "date": "2026-04-12",
-      "category": "investment",
-      "filename": "持股公司週報_20260412.pdf",
-      "type": "pdf",
-      "description": "越秀資本、特銳德、鐵龍物流持股動態週報"
-    },
-    {
-      "id": "okr-0412",
-      "title": "OKR框架與工作模板",
-      "date": "2026-04-12",
-      "category": "team",
-      "filename": "OKR框架與工作模板_20260412.pdf",
-      "type": "pdf",
-      "description": "團隊OKR目標管理框架與標準化工作模板"
-    },
-    {
-      "id": "org-optimize-0412",
-      "title": "組織運作優化建議",
-      "date": "2026-04-12",
-      "category": "team",
-      "filename": "組織運作優化建議_20260412.pdf",
-      "type": "pdf",
-      "description": "情報組啟動與組織架構優化方案"
-    },
-    {
-      "id": "skill-training-0412",
-      "title": "全員Skill培訓執行報告",
-      "date": "2026-04-12",
-      "category": "team",
-      "filename": "全員Skill培訓執行報告_20260412.pdf",
-      "type": "pdf",
-      "description": "團隊AI技能培訓進度與成果報告"
-    },
-    {
-      "id": "skill-plan-0412",
-      "title": "全員Skill培訓計劃",
-      "date": "2026-04-12",
-      "category": "team",
-      "filename": "全員Skill培訓計劃_20260412.pdf",
-      "type": "pdf",
-      "description": "團隊AI技能培訓計劃書"
-    },
-    {
-      "id": "intel-template-0412",
-      "title": "情報組工作模板",
-      "date": "2026-04-12",
-      "category": "team",
-      "filename": "情報組工作模板_20260412.pdf",
-      "type": "pdf",
-      "description": "情報組標準化工作模板"
-    },
-    {
-      "id": "mojt-share-0411",
-      "title": "Mojt市場份額與提升策略",
-      "date": "2026-04-11",
-      "category": "market",
-      "filename": "Mojt市場份額與提升策略.pdf",
-      "type": "pdf",
-      "description": "MOJT市場地位與品牌提升策略報告"
-    },
-    {
-      "id": "news-0411",
-      "title": "國內頭條新聞",
-      "date": "2026-04-11",
-      "category": "daily",
-      "filename": "國內頭條新聞_20260411.pdf",
-      "type": "pdf",
-      "description": "每日國內重要新聞摘要"
+      "id": "report-center-v7",
+      "title": "智能報告中心 v7",
+      "description": "所有報告的存檔與管理，含密碼保護",
+      "type": "report-center",
+      "file": "報告中心_智能版_v7.html",
+      "icon": "🔐",
+      "date": "2026-04-13",
+      "status": "active",
+      "password": "ALLWIN2026"
     }
-  ]
+  ],
+  "localEntry": "index.html",
+  "modules": {
+    "marketing": {
+      "name": "行銷創意",
+      "owner": "行銷天才 & 市場鬼才",
+      "updateFrequency": "每日"
+    },
+    "market": {
+      "name": "市場情報",
+      "owner": "情報之王 & 小台/大陸",
+      "updateFrequency": "每日"
+    },
+    "reports": {
+      "name": "日報/週報",
+      "owner": "勝利之子",
+      "updateFrequency": "每日站會後"
+    },
+    "fans": {
+      "name": "粉絲群監控",
+      "owner": "小台 & 大陸",
+      "updateFrequency": "每日"
+    },
+    "stocks": {
+      "name": "投資持股",
+      "owner": "投資之神",
+      "updateFrequency": "即時"
+    },
+    "todos": {
+      "name": "待辦事項",
+      "owner": "勝利之子",
+      "updateFrequency": "即時"
+    }
+  }
 }
