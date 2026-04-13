@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL WIN 報告中心 | 全勝集團</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f5f5f7;
+            --accent: #0071e3;
+            --text: #1d1d1f;
+            --text-secondary: #86868b;
+            --card-bg: #ffffff;
+            --border: #d2d2d7;
+            --success: #34c759;
+            --warning: #ff9500;
+            --unread: #ff3b30;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Password Protection Overlay */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .password-overlay.hidden {
+            display: none;
+        }
+
+        .password-box {
+            background: white;
+            padding: 48px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+        }
+
+        .password-box h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .password-box p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .password-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .password-box button {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .password-box button:hover {
+            background: #005bb5;
+            transform: scale(1.02);
+        }
+
+        .password-error {
+            color: #ff3b30;
+            font-size: 14px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .brand p {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #e8f5e9;
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-size: 15px;
+            color: #2e7d32;
+        }
+
+        .sync-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Search & Filter */
+        .controls {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            font-size: 17px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 12px 20px;
+            font-size: 15px;
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Reports Grid */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .report-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .report-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        }
+
+        /* 未讀標記 */
+        .report-card.unread::before {
+            content: "";
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 12px;
+            height: 12px;
+            background: var(--unread);
+            border-radius: 50%;
+            z-index: 10;
+            animation: pulse-unread 2s infinite;
+        }
+
+        @keyframes pulse-unread {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* 已讀報告淡化 */
+        .report-card.read {
+            opacity: 0.7;
+        }
+
+        .report-card.read:hover {
+            opacity: 1;
+        }
+
+        .report-header {
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+        }
+
+        .report-category {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .report-title {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .report-body {
+            padding: 24px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .report-date {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .report-type {
+            padding: 6px 14px;
+            background: #f0f0f5;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .report-type.pdf { background: #ffe5e5; color: #cc0000; }
+        .report-type.docx { background: #e5f0ff; color: #0066cc; }
+        .report-type.xlsx { background: #e5ffe5; color: #008800; }
+
+        .report-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .report-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .report-card:hover .report-action {
+            transform: scale(1.02);
+        }
+
+        /* 刪除確認彈窗 */
+        .delete-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-modal.active {
+            display: flex;
+        }
+
+        .delete-box {
+            background: white;
+            padding: 36px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+        }
+
+        .delete-box .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .delete-box h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .delete-box p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .delete-box .report-name {
+            background: #f5f5f7;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 24px;
+            word-break: break-all;
+        }
+
+        .delete-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .delete-buttons button {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel {
+            background: #f0f0f5;
+            color: var(--text);
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e5;
+        }
+
+        .btn-delete {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #d63030;
+        }
+
+        /* PDF Viewer Modal */
+        .pdf-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .pdf-modal.active {
+            display: flex;
+        }
+
+        .pdf-header {
+            background: #1a1a1a;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .pdf-close {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 17px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .pdf-close:hover {
+            background: #555;
+        }
+
+        .pdf-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+            padding: 24px;
+        }
+
+        .pdf-content iframe, .pdf-content embed {
+            width: 100%;
+            height: 100%;
+            max-width: 900px;
+            border-radius: 12px;
+            background: white;
+            min-height: 80vh;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+        }
+
+        .empty-state .icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+        }
+
+        .empty-state h3 {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.7);
+            font-size: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo-section {
+                flex-direction: column;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-number {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection -->
+    <div class="password-overlay" id="passwordOverlay">
+        <div class="password-box">
+            <div class="logo" style="margin: 0 auto 24px;">W</div>
+            <h2>ALL WIN 報告中心</h2>
+            <p>請輸入訪問密碼</p>
+            <input type="password" id="passwordInput" placeholder="輸入密碼..." onkeypress="if(event.key==='Enter')checkPassword()">
+            <button onclick="checkPassword()">確認訪問</button>
+            <p class="password-error" id="passwordError">密碼錯誤，請重新輸入</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">W</div>
+                <div class="brand">
+                    <h1>ALL WIN 報告中心</h1>
+                    <p>全勝集團 | 智能報告樞紐</p>
+                </div>
+            </div>
+            <div class="sync-status">
+                <span class="sync-dot"></span>
+                <span id="syncTime">資料同步中...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" id="mainContent" style="display:none;">
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCount">--</div>
+                <div class="stat-label">總報告數</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="unreadCount">--</div>
+                <div class="stat-label">未讀報告</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="todayCount">--</div>
+                <div class="stat-label">今日更新</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="weekCount">--</div>
+                <div class="stat-label">本週報告</div>
+            </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="controls">
+            <div class="search-row">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜尋報告標題或關鍵字..." oninput="filterReports()">
+                </div>
+            </div>
+            <div class="filter-tags">
+                <span class="filter-tag active" data-category="all" onclick="setCategory('all')">全部</span>
+                <span class="filter-tag" data-category="market" onclick="setCategory('market')">市場報告</span>
+                <span class="filter-tag" data-category="marketing" onclick="setCategory('marketing')">營銷報告</span>
+                <span class="filter-tag" data-category="investment" onclick="setCategory('investment')">投資報告</span>
+                <span class="filter-tag" data-category="finance" onclick="setCategory('finance')">財務報告</span>
+                <span class="filter-tag" data-category="daily" onclick="setCategory('daily')">每日報告</span>
+                <span class="filter-tag" data-category="weekly" onclick="setCategory('weekly')">每週報告</span>
+            </div>
+        </div>
+
+        <!-- Reports Grid -->
+        <div class="reports-grid" id="reportsGrid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>載入報告中...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- PDF Viewer Modal -->
+    <div class="pdf-modal" id="pdfModal">
+        <div class="pdf-header">
+            <span class="pdf-title" id="pdfTitle">報告預覽</span>
+            <button class="pdf-close" onclick="closePdf()">✕ 關閉</button>
+        </div>
+        <div class="pdf-content">
+            <iframe id="pdfFrame"></iframe>
+        </div>
+    </div>
+
+    <!-- 刪除確認彈窗 -->
+    <div class="delete-modal" id="deleteModal">
+        <div class="delete-box">
+            <div class="icon">🗑️</div>
+            <h3>報告已讀取 3 天</h3>
+            <p>請問要刪除這份報告嗎？</p>
+            <div class="report-name" id="deleteReportName">報告名稱</div>
+            <div class="delete-buttons">
+                <button class="btn-cancel" onclick="cancelDelete()">保留報告</button>
+                <button class="btn-delete" onclick="confirmDelete()">刪除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" style="display:none;">
+        <p>© 2026 ALL WIN 全勝集團 | 報告中心 v7.0</p>
+    </footer>
+
+    <script>
+        // ========================================
+        // 配置區 - 修改這裡的設定
+        // ========================================
+        const CONFIG = {
+            // 報告JSON文件路徑（相對於此HTML的位置）
+            reportsJsonUrl: 'reports.json',
+
+            // 報告存放目錄
+            reportsBasePath: '',
+
+            // 密碼（部署時替換）
+            password: 'ALLWIN2026',
+
+            // 自動刷新間隔（毫秒），設為0則不自動刷新
+            autoRefreshInterval: 30000,
+
+            // 已讀報告幾天後提醒刪除
+            readRemindDays: 3
+        };
+
+        // ========================================
+        // 全域變量
+        // ========================================
+        let allReports = [];
+        let filteredReports = [];
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let pendingDeleteReport = null; // 待刪除的報告
+
+        // ========================================
+        // Storage Key
+        // ========================================
+        const READ_STATUS_KEY = 'allwin_read_reports';
+        const READ_TIME_KEY_PREFIX = 'allwin_read_time_';
+
+        // ========================================
+        // 密碼保護
+        // ========================================
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const error = document.getElementById('passwordError');
+            const overlay = document.getElementById('passwordOverlay');
+            const main = document.getElementById('mainContent');
+            const footer = document.getElementById('footer');
+
+            // 自動去除前後空格，解決複製貼上時帶入多餘空格的問題
+            const inputValue = input.value.trim();
+
+            if (inputValue === CONFIG.password) {
+                // 記住已驗證狀態
+                sessionStorage.setItem('allwin_auth', 'true');
+                overlay.classList.add('hidden');
+                main.style.display = 'block';
+                footer.style.display = 'block';
+                loadReports();
+            } else {
+                error.style.display = 'block';
+                input.value = '';
+                input.focus();
+                // 3秒後自動隱藏錯誤提示
+                setTimeout(() => { error.style.display = 'none'; }, 3000);
+            }
+        }
+
+        // 頁面載入時檢查是否已驗證（避免重新整理後需要再次輸入密碼）
+        function checkExistingAuth() {
+            if (sessionStorage.getItem('allwin_auth') === 'true') {
+                const overlay = document.getElementById('passwordOverlay');
+                const main = document.getElementById('mainContent');
+                const footer = document.getElementById('footer');
+                overlay.classList.add('hidden');
+                main.style.display = 'block';
+                footer.style.display = 'block';
+                loadReports();
+            }
+        }
+
+        // ========================================
+        // 已讀狀態管理
+        // ========================================
+        function getReadStatus(filename) {
+            const readReports = JSON.parse(localStorage.getItem(READ_STATUS_KEY) || '{}');
+            return readReports[filename] || false;
+        }
+
+        function markAsRead(filename) {
+            const readReports = JSON.parse(localStorage.getItem(READ_STATUS_KEY) || '{}');
+            const now = Date.now();
+            readReports[filename] = true;
+            localStorage.setItem(READ_STATUS_KEY, JSON.stringify(readReports));
+            localStorage.setItem(READ_TIME_KEY_PREFIX + filename, now.toString());
+        }
+
+        function getReadTime(filename) {
+            return parseInt(localStorage.getItem(READ_TIME_KEY_PREFIX + filename) || '0');
+        }
+
+        function deleteReadStatus(filename) {
+            const readReports = JSON.parse(localStorage.getItem(READ_STATUS_KEY) || '{}');
+            delete readReports[filename];
+            localStorage.setItem(READ_STATUS_KEY, JSON.stringify(readReports));
+            localStorage.removeItem(READ_TIME_KEY_PREFIX + filename);
+        }
+
+        // ========================================
+        // 載入報告
+        // ========================================
+        async function loadReports() {
+            try {
+                const response = await fetch(CONFIG.reportsJsonUrl);
+                if (!response.ok) throw new Error('無法載入報告列表');
+
+                const data = await response.json();
+                allReports = data.recentReports || [];
+                
+                // 按未讀優先排序
+                sortReportsByReadStatus();
+                
+                updateStats(data);
+                updateSyncTime(data.lastUpdated);
+                renderReports();
+                startAutoRefresh();
+                
+                // 檢查已讀報告是否需要刪除提醒
+                checkReadReminders();
+            } catch (error) {
+                console.error('載入報告失敗:', error);
+                document.getElementById('reportsGrid').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⚠️</div>
+                        <h3>載入失敗</h3>
+                        <p>無法連接到報告服務器，請稍後重試。</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ========================================
+        // 按未讀狀態排序
+        // ========================================
+        function sortReportsByReadStatus() {
+            allReports.sort((a, b) => {
+                const aRead = getReadStatus(a.filename);
+                const bRead = getReadStatus(b.filename);
+                
+                // 未讀的排在前面
+                if (!aRead && bRead) return -1;
+                if (aRead && !bRead) return 1;
+                
+                // 都是未讀或都是已讀，按日期排序（新的在前）
+                return new Date(b.date) - new Date(a.date);
+            });
+        }
+
+        // ========================================
+        // 檢查已讀報告刪除提醒
+        // ========================================
+        function checkReadReminders() {
+            const now = Date.now();
+            const remindMs = CONFIG.readRemindDays * 24 * 60 * 60 * 1000;
+            
+            // 只在每天第一次載入時檢查
+            const lastCheckKey = 'allwin_last_reminder_check';
+            const today = new Date().toISOString().split('T')[0];
+            const lastCheck = localStorage.getItem(lastCheckKey);
+            
+            if (lastCheck === today) return; // 今天已檢查過
+            localStorage.setItem(lastCheckKey, today);
+            
+            // 檢查每個已讀報告
+            for (const report of allReports) {
+                if (getReadStatus(report.filename)) {
+                    const readTime = getReadTime(report.filename);
+                    if (readTime > 0 && (now - readTime) >= remindMs) {
+                        // 超過3天，彈窗提醒
+                        showDeleteReminder(report);
+                        return; // 一次只提醒一個
+                    }
+                }
+            }
+        }
+
+        // ========================================
+        // 顯示刪除提醒彈窗
+        // ========================================
+        function showDeleteReminder(report) {
+            pendingDeleteReport = report;
+            document.getElementById('deleteReportName').textContent = report.title;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function cancelDelete() {
+            document.getElementById('deleteModal').classList.remove('active');
+            pendingDeleteReport = null;
+        }
+
+        function confirmDelete() {
+            if (pendingDeleteReport) {
+                deleteReadStatus(pendingDeleteReport.filename);
+                // 從列表中移除
+                allReports = allReports.filter(r => r.filename !== pendingDeleteReport.filename);
+                renderReports();
+                updateStatsUI();
+            }
+            document.getElementById('deleteModal').classList.remove('active');
+            pendingDeleteReport = null;
+        }
+
+        // ========================================
+        // 更新統計
+        // ========================================
+        function updateStats(data) {
+            const today = new Date().toISOString().split('T')[0];
+            const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+            const todayCount = (data.recentReports || []).filter(r => r.date === today).length;
+            const weekCount = (data.recentReports || []).filter(r => r.date >= weekAgo).length;
+            const unreadCount = (data.recentReports || []).filter(r => !getReadStatus(r.filename)).length;
+
+            document.getElementById('totalCount').textContent = data.totalReports || allReports.length;
+            document.getElementById('unreadCount').textContent = unreadCount;
+            document.getElementById('todayCount').textContent = todayCount;
+            document.getElementById('weekCount').textContent = weekCount;
+        }
+
+        function updateStatsUI() {
+            const today = new Date().toISOString().split('T')[0];
+            const unreadCount = allReports.filter(r => !getReadStatus(r.filename)).length;
+            document.getElementById('totalCount').textContent = allReports.length;
+            document.getElementById('unreadCount').textContent = unreadCount;
+        }
+
+        // ========================================
+        // 更新同步時間
+        // ========================================
+        function updateSyncTime(timestamp) {
+            const date = new Date(timestamp);
+            const timeStr = date.toLocaleString('zh-TW', {
+                month: 'numeric',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('syncTime').textContent = `最後同步: ${timeStr}`;
+        }
+
+        // ========================================
+        // 自動刷新
+        // ========================================
+        function startAutoRefresh() {
+            if (CONFIG.autoRefreshInterval > 0) {
+                setInterval(() => {
+                    loadReports();
+                }, CONFIG.autoRefreshInterval);
+            }
+        }
+
+        // ========================================
+        // 過濾報告
+        // ========================================
+        function filterReports() {
+            currentSearch = document.getElementById('searchInput').value.toLowerCase();
+            renderReports();
+        }
+
+        function setCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.classList.toggle('active', tag.dataset.category === category);
+            });
+            renderReports();
+        }
+
+        // ========================================
+        // 渲染報告列表
+        // ========================================
+        function renderReports() {
+            filteredReports = allReports.filter(report => {
+                const matchCategory = currentCategory === 'all' || report.category === currentCategory;
+                const matchSearch = !currentSearch ||
+                    report.title.toLowerCase().includes(currentSearch) ||
+                    (report.description && report.description.toLowerCase().includes(currentSearch));
+                return matchCategory && matchSearch;
+            });
+
+            const grid = document.getElementById('reportsGrid');
+
+            if (filteredReports.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📂</div>
+                        <h3>找不到報告</h3>
+                        <p>嘗試調整搜尋條件或選擇其他類別。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredReports.map(report => {
+                const isRead = getReadStatus(report.filename);
+                const readClass = isRead ? 'read' : 'unread';
+                const unreadBadge = isRead ? '' : '<span style="background:#ff3b30;color:white;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;margin-left:8px;">未讀</span>';
+                
+                return `
+                <div class="report-card ${readClass}" onclick="openReport('${report.filename}', '${report.title}')">
+                    <div class="report-header">
+                        <span class="report-category">${getCategoryName(report.category)}</span>
+                        <h3 class="report-title">${report.title}${unreadBadge}</h3>
+                    </div>
+                    <div class="report-body">
+                        <div class="report-meta">
+                            <span class="report-date">📅 ${report.date}</span>
+                            <span class="report-type ${report.type}">${report.type.toUpperCase()}</span>
+                        </div>
+                        <p class="report-description">${report.description || '點擊查看完整報告內容'}</p>
+                        <div class="report-action">
+                            <span>📖</span> ${isRead ? '再次閱讀' : '開啟報告'}
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // ========================================
+        // 開啟報告
+        // ========================================
+        function openReport(filename, title) {
+            // 標記為已讀
+            markAsRead(filename);
+            
+            const modal = document.getElementById('pdfModal');
+            const frame = document.getElementById('pdfFrame');
+            const titleEl = document.getElementById('pdfTitle');
+
+            modal.classList.add('active');
+            titleEl.textContent = title;
+
+            // 構建報告URL
+            const reportUrl = CONFIG.reportsBasePath + filename;
+            frame.src = reportUrl;
+            
+            // 更新卡片顯示
+            renderReports();
+            updateStatsUI();
+        }
+
+        // ========================================
+        // 關閉PDF
+        // ========================================
+        function closePdf() {
+            const modal = document.getElementById('pdfModal');
+            const frame = document.getElementById('pdfFrame');
+
+            modal.classList.remove('active');
+            frame.src = '';
+        }
+
+        // ========================================
+        // 工具函數
+        // ========================================
+        function getCategoryName(category) {
+            const names = {
+                daily: '📅 每日報告',
+                weekly: '📆 每週報告',
+                market: '📊 市場報告',
+                marketing: '📣 營銷報告',
+                investment: '💰 投資報告',
+                finance: '💼 財務報告',
+                reports: '📁 綜合報告',
+                templates: '📝 模板'
+            };
+            return names[category] || category;
+        }
+
+        // 鍵盤快捷鍵
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePdf();
+                cancelDelete();
+            }
+        });
+
+        // 頁面載入時聚焦密碼輸入框
+        window.addEventListener('load', () => {
+            // 先檢查是否已有驗證
+            checkExistingAuth();
+            // 聚焦密碼輸入框
+            const pwInput = document.getElementById('passwordInput');
+            if (pwInput) pwInput.focus();
+        });
+    </script>
+</body>
+</html>
